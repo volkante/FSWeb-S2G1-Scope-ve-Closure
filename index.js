@@ -3,25 +3,29 @@
 // Başlangıç Challenge'ı
 
 /**Örnek Görev: İlkini Dön
- * 
+ *
  * Bu örnek sonradan gelecek olan görevleri nasıl çözeceğinizi size gösterecek.
- * 
+ *
  * Aşağdıaki Yüksek dereceden fonskiyonu(higher-order function) kullanarak aşağıdakileri yapınız
  *  1. Stringlerden oluşan bir array'i parametre olarak alın
- *  2. Bir string'i değişken olarak alan bir callback fonksiyonunu parametre olarak alın 
+ *  2. Bir string'i değişken olarak alan bir callback fonksiyonunu parametre olarak alın
  *  3. Array'in İLK elemanını değişken olarak alarak çalışacak olan callback fonksiyonunun sonucunu dönün
- * 
+ *
  * Aşağıdaki kodlar bu görevin nasıl yapılacağına örnek olacaktır
  * Bu fonskiyon 'asas' dönmeli(return)
-*/
+ */
 
 function ilkiniDon(stringArray, callback) {
-  return callback(stringArray[0])
+  return callback(stringArray[0]);
 }
-console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin+metin}));
+console.log(
+  "örnek görev:",
+  ilkiniDon(["as", "sa"], function (metin) {
+    return metin + metin;
+  })
+);
 
 // Başlangıç Challenge'ı Sonu
-
 
 ///// M V P ///////
 
@@ -40,8 +44,8 @@ console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin
 function skorArtirici() {
   let skor = 0;
   return function skorGuncelle() {
-   return skor++;
-  }
+    return skor++;
+  };
 }
 
 const skor1 = skorArtirici();
@@ -53,7 +57,6 @@ function skor2() {
   return skor++;
 }
 
-
 /* Görev 2: takimSkoru() 
 Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
   1. Bir çeyrekte bir takımın ürettiği skoru rastgele(random) elde eden bir sonuc dönünüz(return)
@@ -64,14 +67,15 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(){
-    let minScore = 10;
-    let maxScore = 25;
-    let randomScore = Math.round(Math.random() * (maxScore-minScore) + minScore);
-    return randomScore;
+function takimSkoru() {
+  let minScore = 10;
+  let maxScore = 25;
+  let randomScore = Math.round(
+    Math.random() * (maxScore - minScore) + minScore
+  );
+  return randomScore;
 }
 //console.log(takimSkoru())
-
 
 /* Görev 3: macSonucu() 
 Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
@@ -86,9 +90,9 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
   "EvSahibi": 92,
   "KonukTakim": 80
 }
-*/ 
+*/
 
-function macSonucu(cb, ceyrekSayisi){
+function macSonucu(cb, ceyrekSayisi) {
   let homeTeamScore = 0;
   let awayTeamScore = 0;
   for (let i = 0; i < ceyrekSayisi; i++) {
@@ -96,15 +100,11 @@ function macSonucu(cb, ceyrekSayisi){
     awayTeamScore = awayTeamScore + cb();
   }
   return {
-    "EvSahibi": homeTeamScore,
-    "KonukTakim": awayTeamScore
-  }
+    EvSahibi: homeTeamScore,
+    KonukTakim: awayTeamScore,
+  };
 }
 //console.log(macSonucu(takimSkoru,4))
-
-
-
-
 
 /* Zorlayıcı Görev 4: periyotSkoru()
 Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
@@ -119,15 +119,14 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
 }
   */
 
-
 function periyotSkoru(cb) {
-let result = {
-    "EvSahibi": cb(),
-    "KonukTakim": cb()
-  }
-return result;
+  let result = {
+    EvSahibi: cb(),
+    KonukTakim: cb(),
+  };
+  return result;
 }
-console.log(periyotSkoru(takimSkoru))
+//console.log(periyotSkoru(takimSkoru));
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
 Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
@@ -160,17 +159,42 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(cb1, cb2, ceyrekSayisi) { //cb1 periyotskoru, cb2 takımskoru
+  const gameSummary = [];
+  const finalScore = {
+    EvSahibi:0,
+    KonukTakim:0
+  };
+  
+  for (let i = 1; i <= ceyrekSayisi; i++) {
+    const periodScore = cb1(cb2);
+    finalScore.EvSahibi = finalScore.EvSahibi + periodScore.EvSahibi;
+    finalScore.KonukTakim = finalScore.KonukTakim + periodScore.KonukTakim;
+    const periodText = `${i}. Periyot: Ev Sahibi ${periodScore.EvSahibi} - Konuk Takım: ${periodScore.KonukTakim}`;
+    gameSummary.push(periodText);
+  }
+
+  let o = 1 //oyun anlamında o değişkeni galiba. Karışmasın diye.
+  while (finalScore.EvSahibi == finalScore.KonukTakim){
+    const periodScore = cb1(cb2);
+    finalScore.EvSahibi = finalScore.EvSahibi + periodScore.EvSahibi;
+    finalScore.KonukTakim = finalScore.KonukTakim + periodScore.KonukTakim;
+    const overtimeText = `${o}. Uzatma: Ev Sahibi ${periodScore.EvSahibi} - Konuk Takım: ${periodScore.KonukTakim}`;
+    gameSummary.push(overtimeText);
+    o++
+  }
+
+  const finalText = `Maç Sonucu: Ev Sahibi ${finalScore.EvSahibi} - Konuk Takım: ${finalScore.KonukTakim}`;
+  gameSummary.push(finalText)
+  return gameSummary
 }
 
-
-
+console.table(skorTabelasi(periyotSkoru,takimSkoru,4))
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
-function sa(){
-  console.log('Kodlar çalışıyor');
-  return 'as';
+function sa() {
+  console.log("Kodlar çalışıyor");
+  return "as";
 }
 sa();
 module.exports = {
@@ -182,4 +206,4 @@ module.exports = {
   macSonucu,
   periyotSkoru,
   skorTabelasi,
-}
+};
